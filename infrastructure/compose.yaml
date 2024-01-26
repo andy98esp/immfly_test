@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: infrastructure/Dockerfile
+    container_name: backend_immfly
+    env_file:
+      - env/.env
+    volumes:
+      - ../immfly_application:/sites/app/immfly_application
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16.1
+    container_name: postgres_immfly
+    env_file:
+      - env/.env
+    volumes:
+      - postgres_data_immfly:/var/lib/postgresql/data
+    ports:
+      - "50001:5432"
+
+
+volumes:
+  postgres_data_immfly:
